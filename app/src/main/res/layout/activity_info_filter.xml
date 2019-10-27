@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginTop="5dp"
+    android:padding="8dp"
+    android:background="@drawable/bgg"
+    android:id="@+id/container">
+
+
+    <ImageView
+        android:id="@+id/logoitem"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+
+        <TextView
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:id="@+id/bewerberkontaktitem"
+            android:text="Bewerber Kontakt"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:textColor="#fff"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bundesland"
+            android:id="@+id/bundeslanditem"/>
+
+        <TextView
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="Einsatzort"
+            android:layout_marginTop="5dp"
+            android:id="@+id/einsatzortitem"/>
+
+        <TextView
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="Stelle aktiv bis (Publikationsende)"
+            android:layout_marginTop="5dp"
+            android:id="@+id/stelleaktivbis"/>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
