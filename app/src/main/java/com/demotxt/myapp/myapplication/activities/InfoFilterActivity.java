@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -50,19 +52,30 @@ public class InfoFilterActivity extends AppCompatActivity {
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(false);
 
-        if (bundeslandFiltr.equals("null") || bundeslandFiltr.equals("Alle") || bundeslandFiltr.equals(null)) {
+
+        Log.d("Testing", "onCreate: Nach"+bundeslandFiltr);
+        bundeslandFiltr =getIntent().getStringExtra("bundesland");
+        if ( bundeslandFiltr.equals("") || bundeslandFiltr.equals(null)||bundeslandFiltr.equals("Alle")) {
+            bundeslandFiltr="";
+            Log.d("Testing", "onCreate: Hamburg if");
         } else {
             bundeslandFiltr ="&bundesland="+getIntent().getStringExtra("bundesland");
+            Log.d("Testing", "onCreate: else");
         }
+        berufsfelder =getIntent().getStringExtra("berufsfelder");
+        if ( berufsfelder.equals("") || berufsfelder.equals(null)||berufsfelder.equals("Alle")) {
+            berufsfelder = "";
 
-        if (berufsfelder.equals("null") || berufsfelder.equals("Alle") || berufsfelder.equals(null)) {
         } else {
             berufsfelder ="&berufsfeld="+getIntent().getStringExtra("berufsfelder");
-        }
 
-        if (arten.equals("null") || arten.equals("Alle") || arten.equals(null)) {
+        }
+        arten =getIntent().getStringExtra("arten");
+        if ( arten.equals("") || arten.equals(null)||arten.equals("Alle")) {
+            arten="";
         } else {
             arten ="&art="+getIntent().getStringExtra("arten");
+
         }
 
         reconnection();
@@ -78,6 +91,37 @@ public class InfoFilterActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("Testing", "onCreate: Nach"+bundeslandFiltr);
+
+        bundeslandFiltr =getIntent().getStringExtra("bundesland");
+        if ( bundeslandFiltr.equals("") || bundeslandFiltr.equals(null)) {
+            bundeslandFiltr="";
+            Log.d("Testing", "onCreate: Hamburg if");
+        } else {
+            bundeslandFiltr ="&bundesland="+getIntent().getStringExtra("bundesland");
+            Log.d("Testing", "onCreate: else");
+        }
+        berufsfelder =getIntent().getStringExtra("berufsfelder");
+        if ( berufsfelder.equals("") || berufsfelder.equals(null)) {
+            berufsfelder = "";
+
+        } else {
+            berufsfelder ="&berufsfeld="+getIntent().getStringExtra("berufsfelder");
+
+        }
+        arten =getIntent().getStringExtra("arten");
+        if ( arten.equals("") || arten.equals(null)) {
+            arten="";
+        } else {
+            arten ="&art="+getIntent().getStringExtra("arten");
+
+        }
+        reconnection();
+    }
+
     private void reconnection(){
         lstJob = new ArrayList<>() ;
         recyclerView = findViewById(R.id.recyclerviewid);
@@ -86,9 +130,10 @@ public class InfoFilterActivity extends AppCompatActivity {
 
     private void jsonrequest() {
 
-        request = new JsonArrayRequest(JSON_URL+bundeslandFiltr, new Response.Listener<JSONArray>() {
+        request = new JsonArrayRequest(JSON_URL+bundeslandFiltr+arten+berufsfelder, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                Log.d("Testing", "onResponse: "+JSON_URL+bundeslandFiltr+arten+berufsfelder);
 
                 JSONObject jsonObject  = null ;
 
@@ -114,6 +159,7 @@ public class InfoFilterActivity extends AppCompatActivity {
                         job.setUmzeit(jsonObject.getString("Umfang"));
 
                         job.setAbteilung(jsonObject.getString("Abteilung"));
+
                         lstJob.add(job);
 
                     } catch (JSONException e) {
@@ -122,6 +168,11 @@ public class InfoFilterActivity extends AppCompatActivity {
 
 
                 }
+
+                if(lstJob.isEmpty()){
+                    Toast.makeText(InfoFilterActivity.this,"Keine Job",Toast.LENGTH_LONG).show();
+                }
+                Log.d("Testing", "list =  "+lstJob);
 
                 setuprecyclerview(lstJob);
 
@@ -134,6 +185,7 @@ public class InfoFilterActivity extends AppCompatActivity {
         });
 
 
+
         requestQueue = Volley.newRequestQueue(InfoFilterActivity.this);
         requestQueue.add(request) ;
 
@@ -141,7 +193,6 @@ public class InfoFilterActivity extends AppCompatActivity {
     }
 
     private void setuprecyclerview(List<Job> lstJob) {
-
 
         RecyclerViewAdapter myadapter = new RecyclerViewAdapter(this, lstJob) ;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void jsonrequest() {
 
-        request = new JsonArrayRequest(JSON_URL+bundeslandFiltr, new Response.Listener<JSONArray>() {
+        request = new JsonArrayRequest(JSON_URL, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 
@@ -106,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
-
+                if(lstJob==null){
+                    Toast.makeText(MainActivity.this,"Keine Job",Toast.LENGTH_LONG).show();
+                }
                 setuprecyclerview(lstJob);
 
             }
